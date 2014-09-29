@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+    open FILE,"config_file" or die $!;  #read file in
+    my $hash = {}; #save to this hash
+    foreach my $line (<FILE>){
+      my ($name, $val) = $line =~ /(.+?)\s?\=\s?(.+?)/ unless $line =~ /^\#/; #skip begin w/#, skip no \=, skip \s 
+      $hash->{$name} = ($val =~ /on|yes/i) ? 'true' : ($val =~ /off|no/i) ? 'false' : $val if $name && $val; #set true or false if any 
+    } #end foreach lines
+
+    map {print "$_ is $hash->{$_}"; } keys %$hash;
